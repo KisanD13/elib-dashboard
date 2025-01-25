@@ -25,6 +25,9 @@ const LoginPage = () => {
     onSuccess: () => {
       navigate("/");
     },
+    onError(error: any) {
+      return error?.response?.data?.message;
+    },
   });
 
   const handleLoginSubmit = () => {
@@ -44,7 +47,6 @@ const LoginPage = () => {
           <CardTitle className="text-2xl">Login</CardTitle>
           <CardDescription>
             Enter your email below to login to your account. <br />
-             
           </CardDescription>
         </CardHeader>
         <CardContent className="grid gap-4">
@@ -65,6 +67,9 @@ const LoginPage = () => {
         </CardContent>
         <CardFooter>
           <div className="w-full">
+            <div className="text-red-500 text-sm text-center mb-2">
+              {mutation.failureReason?.response?.data?.message || null}
+            </div>
             <Button
               onClick={handleLoginSubmit}
               className="w-full"
