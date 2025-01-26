@@ -9,6 +9,8 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { register } from "@/http/api";
+import useTokenStore from "@/store";
+import { AxiosResponse } from "axios";
 import { useMutation } from "@tanstack/react-query";
 import { LoaderCircle } from "lucide-react";
 import { useRef } from "react";
@@ -19,10 +21,12 @@ const RegisterPage = () => {
   const passwordRef = useRef<HTMLInputElement>(null);
   const nameRef = useRef<HTMLInputElement>(null);
   const navigate = useNavigate();
+  const setToken = useTokenStore((state) => state.setToken);
 
   const mutation = useMutation({
     mutationFn: register,
-    onSuccess: () => {
+    onSuccess: (res: AxiosResponse) => {
+      setToken(res.data.accessToken);
       navigate("/");
     },
     onError(error: any) {
